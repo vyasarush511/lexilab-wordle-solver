@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LexiLab Wordle Solver Benchmark</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1d2939;
+      --muted: #667085;
+      --line: #d0d5dd;
+      --green: #3f8f5f;
+      --yellow: #c49a27;
+      --gray: #667085;
+      --bg: #f7f8fb;
+      --panel: #ffffff;
+    }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 40px 0 56px;
+    }
+    h1, h2 {
+      margin: 0;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+    h1 {
+      font-size: 40px;
+    }
+    h2 {
+      font-size: 22px;
+      margin-top: 34px;
+    }
+    p {
+      color: var(--muted);
+      max-width: 760px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .stat, table {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgb(16 24 40 / 6%);
+    }
+    .stat {
+      padding: 16px;
+    }
+    .label {
+      color: var(--muted);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .value {
+      display: block;
+      margin-top: 8px;
+      font-size: 28px;
+      font-weight: 750;
+    }
+    .distribution {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 84px 1fr 56px;
+      align-items: center;
+      gap: 12px;
+    }
+    .bar-track {
+      height: 14px;
+      background: #e4e7ec;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background: var(--green);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    tr:last-child td {
+      border-bottom: 0;
+    }
+    code {
+      background: #eef2f6;
+      border: 1px solid #dde3ea;
+      border-radius: 6px;
+      padding: 2px 6px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>LexiLab Wordle Solver Benchmark</h1>
+    <p>
+      Entropy-based solver results over a deterministic sample of
+      250 five-letter words. Each guess is chosen by simulating
+      possible feedback patterns and maximizing expected information gain.
+    </p>
+
+    <section class="stats" aria-label="Benchmark summary">
+      <div class="stat"><span class="label">Success Rate</span><span class="value">100.0%</span></div>
+      <div class="stat"><span class="label">Average Guesses</span><span class="value">2.76</span></div>
+      <div class="stat"><span class="label">Worst Success</span><span class="value">4</span></div>
+      <div class="stat"><span class="label">Failures</span><span class="value">0</span></div>
+    </section>
+
+    <h2>Guess Distribution</h2>
+    <div class="distribution">
+      <div class="bar-row"><strong>1 guesses</strong><div class="bar-track"><div class="bar-fill" style="width: 2.0%"></div></div><span>1</span></div>
+<div class="bar-row"><strong>2 guesses</strong><div class="bar-track"><div class="bar-fill" style="width: 28.4%"></div></div><span>71</span></div>
+<div class="bar-row"><strong>3 guesses</strong><div class="bar-track"><div class="bar-fill" style="width: 65.6%"></div></div><span>164</span></div>
+<div class="bar-row"><strong>4 guesses</strong><div class="bar-track"><div class="bar-fill" style="width: 5.6%"></div></div><span>14</span></div>
+    </div>
+
+    <h2>Sample Solves</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Answer</th>
+          <th>Guesses</th>
+          <th>Status</th>
+          <th>Path</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><code>abbes</code></td><td>3</td><td>Solved</td><td>saine / aeros / abbes</td></tr>
+<tr><td><code>adman</code></td><td>2</td><td>Solved</td><td>saine / adman</td></tr>
+<tr><td><code>admit</code></td><td>3</td><td>Solved</td><td>saine / aggri / admit</td></tr>
+<tr><td><code>aeros</code></td><td>2</td><td>Solved</td><td>saine / aeros</td></tr>
+<tr><td><code>agers</code></td><td>3</td><td>Solved</td><td>saine / aeros / agers</td></tr>
+<tr><td><code>agger</code></td><td>3</td><td>Solved</td><td>saine / detag / agger</td></tr>
+<tr><td><code>aggri</code></td><td>2</td><td>Solved</td><td>saine / aggri</td></tr>
+<tr><td><code>alays</code></td><td>3</td><td>Solved</td><td>saine / duras / alays</td></tr>
+<tr><td><code>algin</code></td><td>2</td><td>Solved</td><td>saine / algin</td></tr>
+<tr><td><code>allen</code></td><td>2</td><td>Solved</td><td>saine / allen</td></tr>
+<tr><td><code>andro</code></td><td>3</td><td>Solved</td><td>saine / adman / andro</td></tr>
+<tr><td><code>apres</code></td><td>3</td><td>Solved</td><td>saine / aeros / apres</td></tr>
+<tr><td><code>arere</code></td><td>2</td><td>Solved</td><td>saine / arere</td></tr>
+<tr><td><code>avast</code></td><td>3</td><td>Solved</td><td>saine / duras / avast</td></tr>
+<tr><td><code>awari</code></td><td>3</td><td>Solved</td><td>saine / aggri / awari</td></tr>
+<tr><td><code>azido</code></td><td>2</td><td>Solved</td><td>saine / azido</td></tr>
+<tr><td><code>bahts</code></td><td>3</td><td>Solved</td><td>saine / marsh / bahts</td></tr>
+<tr><td><code>bajra</code></td><td>3</td><td>Solved</td><td>saine / rybat / bajra</td></tr>
+<tr><td><code>baldy</code></td><td>3</td><td>Solved</td><td>saine / rybat / baldy</td></tr>
+<tr><td><code>bared</code></td><td>2</td><td>Solved</td><td>saine / bared</td></tr>
+<tr><td><code>bhuts</code></td><td>3</td><td>Solved</td><td>saine / lours / bhuts</td></tr>
+<tr><td><code>bless</code></td><td>3</td><td>Solved</td><td>saine / deles / bless</td></tr>
+<tr><td><code>calla</code></td><td>3</td><td>Solved</td><td>saine / rybat / calla</td></tr>
+<tr><td><code>canti</code></td><td>2</td><td>Solved</td><td>saine / canti</td></tr>
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>
