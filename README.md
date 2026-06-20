@@ -81,6 +81,27 @@ Show strong opening guesses over a deterministic sample:
 lexilab rank --top 5 --sample-size 750 --seed 7
 ```
 
+Use the interactive assistant while playing Wordle:
+
+```powershell
+lexilab assist
+```
+
+The assistant prints a guess. Enter the color feedback as a five-character
+pattern:
+
+```text
+G = green
+Y = yellow
+. = gray
+```
+
+For example, if the board shows green/yellow/yellow/gray/gray, type:
+
+```text
+GYY..
+```
+
 Simulate a solve:
 
 ```powershell

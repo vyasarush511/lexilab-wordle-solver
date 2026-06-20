@@ -41,6 +41,14 @@ def build_parser() -> argparse.ArgumentParser:
     suggest.add_argument("--sample-size", type=int, default=None)
     suggest.add_argument("--seed", type=int, default=7)
 
+    assist = subparsers.add_parser("assist", help="Play Wordle with live feedback")
+    assist.add_argument(
+        "--first-guess",
+        default="saine",
+        help="Opening guess to use before feedback is known",
+    )
+    assist.add_argument("--max-turns", type=int, default=6)
+
     bench = subparsers.add_parser("benchmark", help="Benchmark the solver")
     bench.add_argument("--sample-size", type=int, default=250)
     bench.add_argument("--seed", type=int, default=7)
@@ -73,6 +81,8 @@ def main() -> None:
             sample_size=args.sample_size,
             seed=args.seed,
         )
+    elif command == "assist":
+        _assist(words, first_guess=args.first_guess, max_turns=args.max_turns)
     elif command == "benchmark":
         _benchmark(words, args.sample_size, args.seed, args.max_turns, args.json, args.html)
     else:
@@ -146,6 +156,55 @@ def _suggest(
             f"expected_left={score.expected_remaining:.2f}  "
             f"worst_bucket={score.worst_bucket}"
         )
+
+
+def _assist(words: list[str], first_guess: str, max_turns: int) -> None:
+    candidates = words
+    guess = validate_word(first_guess)
+
+    print("Enter feedback as five characters: G=green, Y=yellow, .=gray.")
+    print("Example: if the board shows green/yellow/yellow/gray/gray, type GYY..")
+    print("Type q to quit.")
+    print()
+
+    for turn in range(1, max_turns + 1):
+        if turn > 1:
+            guess = best_guesses(candidates, limit=1)[0].word
+
+        print(f"{turn}. Try: {guess}")
+        pattern = _read_feedback()
+        if pattern is None:
+            print("Stopped.")
+            return
+
+        formatted = format_pattern(pattern)
+        if formatted == "GGGGG":
+            print(f"Solved in {turn} guesses.")
+            return
+
+        candidates = filter_candidates(candidates, guess, pattern)
+        print(f"{guess} -> {formatted} leaves {len(candidates)} candidates")
+
+        if not candidates:
+            print("No candidates remain. Check the feedback pattern or word list.")
+            return
+        print()
+
+    print(f"Reached {max_turns} turns with {len(candidates)} candidates remaining.")
+    print("Top remaining candidates:")
+    for word in candidates[:10]:
+        print(f"- {word}")
+
+
+def _read_feedback():
+    while True:
+        raw = input("Feedback: ").strip()
+        if raw.lower() in {"q", "quit", "exit"}:
+            return None
+        try:
+            return parse_pattern(raw)
+        except ValueError as exc:
+            print(f"{exc}. Use G, Y, and . only, like GYY..")
 
 
 def _benchmark(
